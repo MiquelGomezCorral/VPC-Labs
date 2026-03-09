@@ -2,17 +2,27 @@
 
 import dotenv
 import argparse
+from maikol_utils.other_utils import args_to_dataclass
+from maikol_utils.print_utils import print_separator
+
+from scripts import train_gender, train_car
 from src.config import Configuration
-from maikol_utils.other_utils import args_to_config
 
-def cmd_read_extract(args: argparse.Namespace):
+
+def cmd_gender(args: argparse.Namespace):
     """Call read_extract_from_config_list with the given args."""
-    CONFIG: Configuration = args_to_config(args)
-    ...
+    CONFIG: Configuration = args_to_dataclass(args, Configuration)
+    print_separator("START GENDER TRAINING", sep_type="START")
+    train_gender(CONFIG)
+    print_separator("END GENDER TRAINING", sep_type="START")
+    
 
-def cmd_test(args):
-    """Call test functions."""
-    ...
+def cmd_car(args: argparse.Namespace):
+    """Call train_car with the given args."""
+    CONFIG: Configuration = args_to_dataclass(args, Configuration)
+    print_separator("START CAR TRAINING", sep_type="START")
+    train_car(CONFIG)
+    print_separator("END CAR TRAINING", sep_type="START")
 
 # ======================================================================================
 #                                       ARGUMENTS
@@ -28,21 +38,14 @@ if __name__ == "__main__":
     # ======================================================================================
     #                                       read_extract
     # ======================================================================================
-    p_read = subparsers.add_parser("read-extract", help="Read and extract from config list")
-    p_read.add_argument(
-        "-d", "--dataset_name", type=str, default="Nuelas", help="Name of raw data folder"
-    )
-    p_read.add_argument("-m", "--max_files", type=int, default=None, help="Max files to load")
-    p_read.add_argument(
-        "-l", "--use_llm", action="store_false", default=True, help="Disable LLM extraction"
-    )
-    p_read.set_defaults(func=cmd_read_extract)
+    p_gender = subparsers.add_parser("gender", help="Gender classification script")
+    p_gender.set_defaults(func=cmd_gender)
 
     # ======================================================================================
-    #                                       test
+    #                                       car
     # ======================================================================================
-    p_test = subparsers.add_parser("test", help="Test script with any code")
-    p_test.set_defaults(func=cmd_test)
+    p_car = subparsers.add_parser("car", help="Car classification script")
+    p_car.set_defaults(func=cmd_car)
 
     # ======================================================================================
     #                                       CALL
