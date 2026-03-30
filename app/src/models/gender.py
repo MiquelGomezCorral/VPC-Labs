@@ -1,4 +1,9 @@
+import torch 
 from torch import nn
+import pytorch_lightning as pl
+
+from src.config import Configuration
+
 
 # Architecture SpecificationsInput Layer: 
 # $32\times32$ pixel RGB images.
@@ -19,9 +24,9 @@ from torch import nn
 #   Regularization: Dropout is applied to both convolutional and fully-connected activations to prevent overfitting.
 #   Optimization Gain: This specific architecture is 16 times more memory efficient than the initial Starting CNN while maintaining comparable accuracy.
 
-class GENDER_CNN(nn.Module):
+class GenderCNN(nn.Module):
     def __init__(self, dropout_rate=0.5, num_classes=2):
-        super(GENDER_CNN, self).__init__()
+        super(GenderCNN, self).__init__()
         self.conv_block1 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, padding=1),
             nn.ReLU(),
@@ -61,3 +66,62 @@ class GENDER_CNN(nn.Module):
 
         print(f"Model parameters (trainable/total): {trainable_params:,}/{total_params:,}")
         print(f"Approx. model size (parameters only): {model_mb:.3f} MB")
+
+
+class GenderModule(pl.LightningModule):
+    def __init__(self, CONFIG: Configuration):
+        super().__init__()
+        # self.save_hyperparameters(ignore=["CONFIG"])
+        self.CONFIG = CONFIG
+        self.model = GenderCNN(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
+        self.criterion = torch.nn.CrossEntropyLoss(label_smoothing=CONFIG.label_smoothing)
+
+    def forward(self, x):
+        return self.model(x)
+
+    def _shared_step(self, batch, stage: str):
+        x, y = batch
+        logits = self(x)
+        loss = self.criterion(logits, y)
+        preds = torch.argmax(logits, dim=1)
+        acc = (preds == y).float().mean()
+
+        self.log(f"{stage}_loss", loss, prog_bar=True, on_epoch=True, on_step=False)
+        self.log(f"{stage}_acc", acc, prog_bar=True, on_epoch=True, on_step=False)
+        return loss
+
+    def training_step(self, batch, batch_idx):
+        return self._shared_step(batch, stage="train")
+
+    def validation_step(self, batch, batch_idx):
+        self._shared_step(batch, stage="val")
+
+    def configure_optimizers(self):
+        # optimizer = torch.optim.SGD(
+        #     self.parameters(),
+        #     lr=self.CONFIG.learning_rate,
+        #     momentum=self.CONFIG.momentum,
+        #     weight_decay=self.CONFIG.weight_decay,
+        #     nesterov=True,
+        # )
+        optimizer = torch.optim.AdamW(
+            self.parameters(),
+            lr=self.CONFIG.learning_rate,
+            weight_decay=self.CONFIG.weight_decay,
+        )
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            optimizer,
+            T_0=self.CONFIG.epochs,      # restart every N epochs
+            eta_min=self.CONFIG.eta_min, # minimum lr
+        )
+
+        return {
+            "optimizer": optimizer,
+            "lr_scheduler": {
+                "scheduler": scheduler,
+                "monitor": "val_acc",
+                "interval": "epoch",
+                "frequency": 1,
+                "strict": True,
+            },
+        }

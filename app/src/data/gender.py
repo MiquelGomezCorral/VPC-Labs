@@ -5,6 +5,8 @@ from torchvision import transforms
 
 from src.config import Configuration
 
+
+
 def load_gender_data(CONFIG: Configuration):
     """
     Load and preprocess the gender classification dataset based on the provided configuration.
@@ -23,8 +25,21 @@ def load_gender_data(CONFIG: Configuration):
     # ============== Define transforms ==============
     train_transform = transforms.Compose(
         [
-            transforms.Resize((CONFIG.image_size, CONFIG.image_size), antialias=True),
+            transforms.RandomResizedCrop(
+                (CONFIG.image_size, CONFIG.image_size),
+                scale=(0.95, 1.0),
+                ratio=(0.95, 1.05),
+                antialias=True,
+            ),
+            transforms.RandomRotation(degrees=5),
             transforms.RandomHorizontalFlip(p=0.5),
+            # transforms.ColorJitter(
+            #     brightness=0.2,
+            #     saturation=0.2,
+            #     hue=0.05,
+            # ),
+            transforms.RandomGrayscale(p=0.1),
+            AddGaussianNoise(std=0.02),
         ]
     )
     test_transform = transforms.Compose(
@@ -71,3 +86,12 @@ class GenderDataset(Dataset):
 
 
         return image, self.y[idx]
+    
+
+class AddGaussianNoise:
+    def __init__(self, std=0.02):
+        self.std = std
+
+    def __call__(self, tensor):
+        noise = torch.randn_like(tensor) * self.std
+        return (tensor + noise).clamp(0.0, 1.0)

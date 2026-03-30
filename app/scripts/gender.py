@@ -1,61 +1,8 @@
 
 from src.config import Configuration
 from src.data import load_gender_data
-from src.models import GENDER_CNN
+from src.models import GenderModule
 import pytorch_lightning as pl
-import torch
-
-
-class GenderLightningModule(pl.LightningModule):
-    def __init__(self, config: Configuration):
-        super().__init__()
-        self.save_hyperparameters(ignore=["config"])
-        self.config = config
-        self.model = GENDER_CNN(dropout_rate=config.dropout_rate, num_classes=config.num_classes)
-        self.criterion = torch.nn.CrossEntropyLoss(label_smoothing=config.label_smoothing)
-
-    def forward(self, x):
-        return self.model(x)
-
-    def _shared_step(self, batch, stage: str):
-        x, y = batch
-        logits = self(x)
-        loss = self.criterion(logits, y)
-        preds = torch.argmax(logits, dim=1)
-        acc = (preds == y).float().mean()
-
-        self.log(f"{stage}_loss", loss, prog_bar=True, on_epoch=True, on_step=False)
-        self.log(f"{stage}_acc", acc, prog_bar=True, on_epoch=True, on_step=False)
-        return loss
-
-    def training_step(self, batch, batch_idx):
-        return self._shared_step(batch, stage="train")
-
-    def validation_step(self, batch, batch_idx):
-        self._shared_step(batch, stage="val")
-
-    def configure_optimizers(self):
-        optimizer = torch.optim.AdamW(
-            self.parameters(),
-            lr=self.config.learning_rate,
-            weight_decay=self.config.weight_decay,
-        )
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            optimizer,
-            mode="max",
-            factor=self.config.lr_reduce_factor,
-            patience=self.config.lr_patience,
-        )
-        return {
-            "optimizer": optimizer,
-            "lr_scheduler": {
-                "scheduler": scheduler,
-                "monitor": "val_acc",
-                "interval": "epoch",
-                "frequency": 1,
-                "strict": True,
-            },
-        }
 
 
 def train_gender(CONFIG: Configuration):
@@ -67,7 +14,7 @@ def train_gender(CONFIG: Configuration):
     pl.seed_everything(CONFIG.seed, workers=True)
 
     train_loader, test_loader = load_gender_data(CONFIG)
-    model = GenderLightningModule(CONFIG)
+    model = GenderModule(CONFIG)
     model.model.print_number_parameters()
 
 
@@ -75,7 +22,7 @@ def train_gender(CONFIG: Configuration):
         pl.callbacks.EarlyStopping(
             monitor="val_acc",
             mode="max",
-            patience=CONFIG.early_stopping_patience,
+            patience=CONFIG.patience,
             verbose=True,
         ),
         pl.callbacks.ModelCheckpoint(
@@ -94,13 +41,14 @@ def train_gender(CONFIG: Configuration):
     )
 
     trainer = pl.Trainer(
-        max_epochs=CONFIG.num_epochs,
+        max_epochs=CONFIG.epochs,
         callbacks=callbacks,
         logger=logger,
         check_val_every_n_epoch=1,
-        log_every_n_steps=10,
+        log_every_n_steps=1,
         # deterministic=True,
     )
 
     trainer.fit(model=model, train_dataloaders=train_loader, val_dataloaders=test_loader)
     
+

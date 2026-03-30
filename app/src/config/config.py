@@ -6,6 +6,10 @@ everywhere and considered configuration.
 import os
 from dataclasses import dataclass
 
+import torch
+from maikol_utils.print_utils import print_separator
+from maikol_utils.file_utils import make_dirs
+
 @dataclass 
 class Configuration:
     """Configuration class for the project."""
@@ -27,26 +31,49 @@ class Configuration:
 
 
     exp_name: str = "base_name"
+    exp_description: str = "Base experiment description"
     seed:     int = 42
-    batch_size: int = 128
-    bach_size: int = 128
-    num_epochs: int = 100
     image_size: int = 128
+    num_classes: int = 2
+
+    batch_size: int = 512
+    epochs: int = 100
 
     dropout_rate: float = 0.5
-    num_classes: int = 2
     label_smoothing: float = 0.1
 
     learning_rate: float = 0.01
-    momentum: float = 0.9
-    lr_reduce_factor: float = 0.5
-    lr_patience: int = 2
     weight_decay: float = 1e-4
 
-    early_stopping_patience: int = 6
+    eta_min: float = 1e-6
 
+    momentum: float = 0.9
+    
+    lr_reduce_factor: float = 0.5
+    lr_patience: int = 3
 
+    patience: int = 10
+
+    device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def __post_init__(self):
-        # Backward compatibility for typoed field name.
-        self.batch_size = int(getattr(self, "batch_size", self.bach_size))
+        make_dirs([self.MODELS_PATH, self.LOGS_PATH])
+
+        print_separator("CONFIGURATION", sep_type="LONG")
+
+        print(
+            f"Experiment description: {self.exp_description}\n"
+            f"Experiment name: {self.exp_name}\n"
+            f"seed: {self.seed}\n"
+            f"batch_size: {self.batch_size}\n"
+            f"epochs: {self.epochs}\n"
+            f"dropout_rate: {self.dropout_rate}\n"
+            f"label_smoothing: {self.label_smoothing}\n"
+            f"learning_rate: {self.learning_rate}\n"
+            f"weight_decay: {self.weight_decay}\n"
+            f"eta_min: {self.eta_min}\n"
+            f"momentum: {self.momentum}\n"
+            f"lr_reduce_factor: {self.lr_reduce_factor}\n"
+            f"lr_patience: {self.lr_patience}\n"
+            f"patience: {self.patience}\n"
+        )
