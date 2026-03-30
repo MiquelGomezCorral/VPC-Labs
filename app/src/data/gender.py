@@ -31,13 +31,13 @@ def load_gender_data(CONFIG: Configuration):
                 ratio=(0.95, 1.05),
                 antialias=True,
             ),
-            transforms.RandomRotation(degrees=5),
+            transforms.RandomRotation(degrees=10),
             transforms.RandomHorizontalFlip(p=0.5),
-            # transforms.ColorJitter(
-            #     brightness=0.2,
-            #     saturation=0.2,
-            #     hue=0.05,
-            # ),
+            transforms.ColorJitter(
+                brightness=0.2,
+                saturation=0.2,
+                hue=0.05,
+            ),
             transforms.RandomGrayscale(p=0.1),
             AddGaussianNoise(std=0.02),
         ]

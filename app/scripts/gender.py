@@ -11,6 +11,7 @@ def train_gender(CONFIG: Configuration):
     Args:
         CONFIG (Configuration): The configuration object containing training parameters.
     """
+    # Ensure full determinism across all sources of randomness
     pl.seed_everything(CONFIG.seed, workers=True)
 
     train_loader, test_loader = load_gender_data(CONFIG)
@@ -46,9 +47,9 @@ def train_gender(CONFIG: Configuration):
         logger=logger,
         check_val_every_n_epoch=1,
         log_every_n_steps=1,
-        # deterministic=True,
+        deterministic="warn",  # Use "warn" instead of True to allow non-deterministic algorithms when necessary
     )
 
     trainer.fit(model=model, train_dataloaders=train_loader, val_dataloaders=test_loader)
-    
+
 

@@ -33,10 +33,10 @@ class Configuration:
     exp_name: str = "base_name"
     exp_description: str = "Base experiment description"
     seed:     int = 42
-    image_size: int = 128
+    image_size: int = 100
     num_classes: int = 2
 
-    batch_size: int = 512
+    batch_size: int = 128
     epochs: int = 100
 
     dropout_rate: float = 0.5

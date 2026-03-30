@@ -41,10 +41,10 @@ class GenderCNN(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2)
         )
-        self.pool = nn.AdaptiveAvgPool2d((8, 8))
+        # self.pool = nn.AdaptiveAvgPool2d((8, 8))
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(64 * 8 * 8, 16),
+            nn.Linear(64 * 25 * 25, 16),
             nn.ReLU(),
             nn.Dropout(dropout_rate),
             nn.Linear(16, num_classes)  # Output logits for binary classification
@@ -53,7 +53,7 @@ class GenderCNN(nn.Module):
     def forward(self, x):
         x = self.conv_block1(x)
         x = self.conv_block2(x)
-        x = self.pool(x)
+        # x = self.pool(x)
         x = self.fc(x)
         return x
 
