@@ -49,7 +49,7 @@ if __name__ == "__main__":
     p_gender.add_argument("-lp", "--lr_patience", type=int, default=3, help="Learning rate scheduler patience (default: 3)")
     p_gender.add_argument("-wd", "--weight_decay", type=float, default=1e-4, help="Weight decay (default: 1e-4)")
     p_gender.add_argument("-em", "--eta_min", type=float, default=1e-6, help="Minimum learning rate for scheduler (default: 1e-6)")
-    p_gender.add_argument("-pa", "--patience", type=int, default=10, help="Early stopping patience (default: 5)")
+    p_gender.add_argument("-pa", "--patience", type=int, default=20, help="Early stopping patience (default: 5)")
     p_gender.add_argument("-mo", "--momentum", type=float, default=0.9, help="Momentum (default: 0.9)")
     p_gender.add_argument("-lrf", "--lr_reduce_factor", type=float, default=0.5, help="Learning rate reduce factor for scheduler (default: 0.5)")
 

@@ -25,20 +25,27 @@ def load_gender_data(CONFIG: Configuration):
     # ============== Define transforms ==============
     train_transform = transforms.Compose(
         [
-            transforms.RandomResizedCrop(
-                (CONFIG.image_size, CONFIG.image_size),
-                scale=(0.95, 1.0),
-                ratio=(0.95, 1.05),
-                antialias=True,
-            ),
+            # transforms.RandomResizedCrop(
+            #     (CONFIG.image_size, CONFIG.image_size),
+            #     scale=(0.95, 1.0),
+            #     ratio=(0.95, 1.05),
+            #     antialias=True,
+            # ),
             transforms.RandomRotation(degrees=10),
             transforms.RandomHorizontalFlip(p=0.5),
-            transforms.ColorJitter(
-                brightness=0.2,
-                saturation=0.2,
-                hue=0.05,
-            ),
+            # transforms.ColorJitter(
+            #     brightness=0.1,
+            #     saturation=0.1,
+            #     hue=0.03,
+            # ),
             transforms.RandomGrayscale(p=0.1),
+            transforms.RandomErasing(
+                p=0.25,
+                scale=(0.02, 0.12),
+                ratio=(0.3, 3.3),
+                value='random',
+                inplace=False,
+            ),
             AddGaussianNoise(std=0.02),
         ]
     )
