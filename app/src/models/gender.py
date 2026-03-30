@@ -36,7 +36,7 @@ class GENDER_CNN(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2)
         )
-        # self.pool = nn.AdaptiveAvgPool2d((8, 8))
+        self.pool = nn.AdaptiveAvgPool2d((8, 8))
         self.fc = nn.Sequential(
             nn.Flatten(),
             nn.Linear(64 * 8 * 8, 16),
@@ -48,8 +48,16 @@ class GENDER_CNN(nn.Module):
     def forward(self, x):
         x = self.conv_block1(x)
         x = self.conv_block2(x)
-        # x = self.pool(x)
+        x = self.pool(x)
         x = self.fc(x)
         return x
 
 
+    def print_number_parameters(self):
+        total_params = sum(p.numel() for p in self.parameters())
+        trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        model_bytes = sum(p.numel() * p.element_size() for p in self.parameters())
+        model_mb = model_bytes / (1024 ** 2)
+
+        print(f"Model parameters (trainable/total): {trainable_params:,}/{total_params:,}")
+        print(f"Approx. model size (parameters only): {model_mb:.3f} MB")

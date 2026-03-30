@@ -42,7 +42,7 @@ class GenderLightningModule(pl.LightningModule):
         )
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
             optimizer,
-            mode="min",
+            mode="max",
             factor=self.config.lr_reduce_factor,
             patience=self.config.lr_patience,
         )
@@ -50,9 +50,10 @@ class GenderLightningModule(pl.LightningModule):
             "optimizer": optimizer,
             "lr_scheduler": {
                 "scheduler": scheduler,
-                "monitor": "val_loss",
+                "monitor": "val_acc",
                 "interval": "epoch",
                 "frequency": 1,
+                "strict": True,
             },
         }
 
@@ -67,20 +68,22 @@ def train_gender(CONFIG: Configuration):
 
     train_loader, test_loader = load_gender_data(CONFIG)
     model = GenderLightningModule(CONFIG)
+    model.model.print_number_parameters()
+
 
     callbacks = [
         pl.callbacks.EarlyStopping(
-            monitor="val_loss",
-            mode="min",
+            monitor="val_acc",
+            mode="max",
             patience=CONFIG.early_stopping_patience,
             verbose=True,
         ),
         pl.callbacks.ModelCheckpoint(
-            monitor="val_loss",
-            mode="min",
+            monitor="val_acc",
+            mode="max",
             save_top_k=1,
             save_weights_only=True,
-            filename="gender-best-{epoch:02d}-{val_loss:.4f}",
+            filename="gender-best-{epoch:02d}-{val_acc:.4f}",
             dirpath=CONFIG.MODELS_PATH,
         ),
     ]
@@ -94,11 +97,10 @@ def train_gender(CONFIG: Configuration):
         max_epochs=CONFIG.num_epochs,
         callbacks=callbacks,
         logger=logger,
-        check_val_every_n_epoch=5,
+        check_val_every_n_epoch=1,
         log_every_n_steps=10,
-        deterministic=True,
+        # deterministic=True,
     )
 
     trainer.fit(model=model, train_dataloaders=train_loader, val_dataloaders=test_loader)
-    
     
