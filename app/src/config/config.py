@@ -65,6 +65,7 @@ class Configuration:
         print(
             f"Experiment description: {self.exp_description}\n"
             f"Experiment name: {self.exp_name}\n"
+            f"Model type: {self.model_type}\n"
             f"seed: {self.seed}\n"
             f"batch_size: {self.batch_size}\n"
             f"epochs: {self.epochs}\n"

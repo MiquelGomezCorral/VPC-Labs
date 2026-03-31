@@ -1,4 +1,6 @@
 
+import torch
+
 from src.config import Configuration
 from src.data import load_gender_data
 from src.models import GenderModule
@@ -15,7 +17,7 @@ def train_gender(CONFIG: Configuration):
     pl.seed_everything(CONFIG.seed, workers=True)
 
     train_loader, test_loader = load_gender_data(CONFIG)
-    model = GenderModule(CONFIG)
+    model = GenderModule(CONFIG, weights=torch.tensor([0.4, 0.6]))
     model.model.print_number_parameters()
 
 

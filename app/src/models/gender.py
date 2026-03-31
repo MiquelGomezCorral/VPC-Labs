@@ -47,7 +47,7 @@ class GenderCNN(nn.Module):
             nn.Linear(64 * 25 * 25, 16),
             nn.ReLU(),
             nn.Dropout(dropout_rate),
-            nn.Linear(16, num_classes)  # Output logits for binary classification
+            nn.Linear(16, num_classes)  
         )
 
     def forward(self, x):
@@ -114,7 +114,7 @@ class GenderCNNSmall(nn.Module):
 
 
 class GenderModule(pl.LightningModule):
-    def __init__(self, CONFIG: Configuration):
+    def __init__(self, CONFIG: Configuration, weights=None):
         super().__init__()
         # self.save_hyperparameters(ignore=["CONFIG"])
         self.CONFIG = CONFIG
@@ -122,7 +122,18 @@ class GenderModule(pl.LightningModule):
             self.model = GenderCNNSmall(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
         else:
             self.model = GenderCNN(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
-        self.criterion = torch.nn.CrossEntropyLoss(label_smoothing=CONFIG.label_smoothing)
+
+        # Calculate weights: Majority_class_count / Class_count
+        # weights = torch.tensor([1.0, 8204.0 / 2381.0]) 
+        if weights is None:
+            self.criterion = torch.nn.CrossEntropyLoss(
+                label_smoothing=CONFIG.label_smoothing 
+            )
+        else: 
+            self.criterion = torch.nn.CrossEntropyLoss(
+                weight=weights, 
+                label_smoothing=CONFIG.label_smoothing 
+            )
 
     def forward(self, x):
         return self.model(x)
