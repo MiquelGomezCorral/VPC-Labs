@@ -68,12 +68,60 @@ class GenderCNN(nn.Module):
         print(f"Approx. model size (parameters only): {model_mb:.3f} MB")
 
 
+class GenderCNNSmall(nn.Module):
+    def __init__(self, dropout_rate=0.5, num_classes=2):
+        super(GenderCNNSmall, self).__init__()
+        self.conv_block1 = nn.Sequential(
+            nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2)
+        )
+        self.conv_block2 = nn.Sequential(
+            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=64, out_channels=62, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2)
+        )
+        self.pool = nn.AdaptiveAvgPool2d((6, 6))
+        self.fc = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(62 * 6 * 6, 16),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(16, num_classes)  # Output logits for binary classification
+        )
+
+    def forward(self, x):
+        x = self.conv_block1(x)
+        x = self.conv_block2(x)
+        x = self.pool(x)
+        x = self.fc(x)
+        return x
+
+
+    def print_number_parameters(self):
+        total_params = sum(p.numel() for p in self.parameters())
+        trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        model_bytes = sum(p.numel() * p.element_size() for p in self.parameters())
+        model_mb = model_bytes / (1024 ** 2)
+
+        print(f"Model parameters (trainable/total): {trainable_params:,}/{total_params:,}")
+        print(f"Approx. model size (parameters only): {model_mb:.3f} MB")
+
+
+
 class GenderModule(pl.LightningModule):
     def __init__(self, CONFIG: Configuration):
         super().__init__()
         # self.save_hyperparameters(ignore=["CONFIG"])
         self.CONFIG = CONFIG
-        self.model = GenderCNN(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
+        if CONFIG.model_type == "small":
+            self.model = GenderCNNSmall(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
+        else:
+            self.model = GenderCNN(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
         self.criterion = torch.nn.CrossEntropyLoss(label_smoothing=CONFIG.label_smoothing)
 
     def forward(self, x):

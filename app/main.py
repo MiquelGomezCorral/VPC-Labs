@@ -41,6 +41,7 @@ if __name__ == "__main__":
     #                                       read_extract
     # ======================================================================================
     p_gender = subparsers.add_parser("gender", help="Gender classification script")
+    p_gender.add_argument("-mt", "--model_type", choices=["small", "large"], default="small", help="Model type (default: 'small', options: 'small', 'large')")
     p_gender.add_argument("-bs", "--batch_size", type=int, default=128, help="Batch size (default: 512)")
     p_gender.add_argument("-ep", "--num_epochs", type=int, default=100, help="Number of epochs (default: 100)")
     p_gender.add_argument("-dr", "--dropout_rate", type=float, default=0.5, help="Dropout rate (default: 0.5)")

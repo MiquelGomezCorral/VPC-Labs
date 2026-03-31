@@ -32,6 +32,7 @@ class Configuration:
 
     exp_name: str = "base_name"
     exp_description: str = "Base experiment description"
+    model_type: str = "small"  # "small" or "large"
     seed:     int = 42
     image_size: int = 100
     num_classes: int = 2

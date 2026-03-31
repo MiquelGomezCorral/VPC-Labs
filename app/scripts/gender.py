@@ -31,7 +31,7 @@ def train_gender(CONFIG: Configuration):
             mode="max",
             save_top_k=1,
             save_weights_only=True,
-            filename="gender-best-{epoch:02d}-{val_acc:.4f}",
+            filename=f"gender-{CONFIG.model_type}-{{epoch:02d}}-{{val_acc:.4f}}",
             dirpath=CONFIG.MODELS_PATH,
         ),
     ]
