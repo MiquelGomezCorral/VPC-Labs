@@ -17,11 +17,23 @@ class Configuration:
     MODELS_PATH: str = os.path.join("..", "models")
     LOGS_PATH: str = os.path.join("..", "logs")
     
+    # ===================================================================
+    #                       GENDER
+    # ===================================================================
+    gender_models: str = os.path.join(MODELS_PATH, "gender")
+
     gender_data: str = os.path.join(DATA_PATH, "gender")
     gender_x_train: str = os.path.join(gender_data, "x_train.npy")
     gender_x_test: str = os.path.join(gender_data, "x_test.npy")
     gender_y_train: str = os.path.join(gender_data, "y_train.npy")
     gender_y_test: str = os.path.join(gender_data, "y_test.npy")
+
+
+    model_type: str = "small"  # "small" or "large"
+    # ===================================================================
+    #                       CAR
+    # ===================================================================
+    car_models: str = os.path.join(MODELS_PATH, "car")
 
     car_data: str = os.path.join(DATA_PATH, "car")
     car_x_train: str = os.path.join(car_data, "x_train.npy")
@@ -32,7 +44,6 @@ class Configuration:
 
     exp_name: str = "base_name"
     exp_description: str = "Base experiment description"
-    model_type: str = "small"  # "small" or "large"
     seed:     int = 42
     image_size: int = 100
     num_classes: int = 2
@@ -58,7 +69,7 @@ class Configuration:
     device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def __post_init__(self):
-        make_dirs([self.MODELS_PATH, self.LOGS_PATH])
+        make_dirs([self.MODELS_PATH, self.LOGS_PATH, self.gender_models, self.car_models])
 
         print_separator("CONFIGURATION", sep_type="LONG")
 
