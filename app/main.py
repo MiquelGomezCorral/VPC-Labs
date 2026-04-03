@@ -42,17 +42,19 @@ if __name__ == "__main__":
     # ======================================================================================
     p_gender = subparsers.add_parser("gender", help="Gender classification script")
     p_gender.add_argument("-mt", "--model_type", choices=["small", "large"], default="large", help="Model type (default: 'small', options: 'small', 'large')")
+    p_gender.add_argument("-is", "--image_size", type=int, default=100, help="Image size (default: 100)")
+    p_gender.add_argument("-cl", "--num_classes", type=int, default=2, help="Number of classes (default: 2)")
     p_gender.add_argument("-bs", "--batch_size", type=int, default=128, help="Batch size (default: 512)")
     p_gender.add_argument("-ep", "--num_epochs", type=int, default=100, help="Number of epochs (default: 100)")
     p_gender.add_argument("-dr", "--dropout_rate", type=float, default=0.5, help="Dropout rate (default: 0.5)")
     p_gender.add_argument("-ls", "--label_smoothing", type=float, default=0.1, help="Label smoothing (default: 0.1)")
     p_gender.add_argument("-lr", "--learning_rate", type=float, default=5e-3, help="Learning rate (default: 0.01)")
-    p_gender.add_argument("-lp", "--lr_patience", type=int, default=3, help="Learning rate scheduler patience (default: 3)")
+    # p_gender.add_argument("-lp", "--lr_patience", type=int, default=3, help="Learning rate scheduler patience (default: 3)")
     p_gender.add_argument("-wd", "--weight_decay", type=float, default=1e-4, help="Weight decay (default: 1e-4)")
     p_gender.add_argument("-em", "--eta_min", type=float, default=1e-6, help="Minimum learning rate for scheduler (default: 1e-6)")
     p_gender.add_argument("-pa", "--patience", type=int, default=20, help="Early stopping patience (default: 5)")
-    p_gender.add_argument("-mo", "--momentum", type=float, default=0.9, help="Momentum (default: 0.9)")
-    p_gender.add_argument("-lrf", "--lr_reduce_factor", type=float, default=0.5, help="Learning rate reduce factor for scheduler (default: 0.5)")
+    # p_gender.add_argument("-mo", "--momentum", type=float, default=0.9, help="Momentum (default: 0.9)")
+    # p_gender.add_argument("-lrf", "--lr_reduce_factor", type=float, default=0.5, help="Learning rate reduce factor for scheduler (default: 0.5)")
 
     p_gender.set_defaults(func=cmd_gender)
 
@@ -60,18 +62,20 @@ if __name__ == "__main__":
     #                                       Car
     # ======================================================================================
     p_car = subparsers.add_parser("car", help="Car classification script")
-    p_car.add_argument("-mt", "--model_type", choices=["small", "large"], default="large", help="Model type (default: 'small', options: 'small', 'large')")
+    p_car.add_argument("-is", "--image_size", type=int, default=224, help="Image size (default: 224)")
+    p_car.add_argument("-cl", "--num_classes", type=int, default=20, help="Number of classes (default: 20)")
     p_car.add_argument("-bs", "--batch_size", type=int, default=128, help="Batch size (default: 512)")
     p_car.add_argument("-ep", "--num_epochs", type=int, default=100, help="Number of epochs (default: 100)")
-    p_car.add_argument("-dr", "--dropout_rate", type=float, default=0.5, help="Dropout rate (default: 0.5)")
+    # p_car.add_argument("-dr", "--dropout_rate", type=float, default=0.5, help="Dropout rate (default: 0.5)")
     p_car.add_argument("-ls", "--label_smoothing", type=float, default=0.1, help="Label smoothing (default: 0.1)")
     p_car.add_argument("-lr", "--learning_rate", type=float, default=5e-3, help="Learning rate (default: 0.01)")
-    p_car.add_argument("-lp", "--lr_patience", type=int, default=3, help="Learning rate scheduler patience (default: 3)")
+    # p_car.add_argument("-lp", "--lr_patience", type=int, default=3, help="Learning rate scheduler patience (default: 3)")
     p_car.add_argument("-wd", "--weight_decay", type=float, default=1e-4, help="Weight decay (default: 1e-4)")
     p_car.add_argument("-em", "--eta_min", type=float, default=1e-6, help="Minimum learning rate for scheduler (default: 1e-6)")
     p_car.add_argument("-pa", "--patience", type=int, default=20, help="Early stopping patience (default: 5)")
     p_car.add_argument("-mo", "--momentum", type=float, default=0.9, help="Momentum (default: 0.9)")
-    p_car.add_argument("-lrf", "--lr_reduce_factor", type=float, default=0.5, help="Learning rate reduce factor for scheduler (default: 0.5)")
+    # p_car.add_argument("-lrf", "--lr_reduce_factor", type=float, default=0.5, help="Learning rate reduce factor for scheduler (default: 0.5)")
+    p_car.add_argument("-mt", "--model_type", choices=["vg-res", "vg-vg", "res-res"], default="vg-res", help="Model type (default: 'vg-res', options: 'vg-vg', 'res-res', 'vg-res')")
 
     p_car.set_defaults(func=cmd_car)
 

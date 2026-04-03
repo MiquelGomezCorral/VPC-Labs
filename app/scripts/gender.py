@@ -1,10 +1,8 @@
-
 import torch
-
+import pytorch_lightning as pl
 from src.config import Configuration
 from src.data import load_gender_data
 from src.models import GenderModule
-import pytorch_lightning as pl
 
 
 def train_gender(CONFIG: Configuration):
@@ -34,7 +32,7 @@ def train_gender(CONFIG: Configuration):
             save_top_k=1,
             save_weights_only=True,
             filename=f"gender-{CONFIG.model_type}-{{epoch:02d}}-{{val_acc:.4f}}",
-            dirpath=CONFIG.MODELS_PATH,
+            dirpath=CONFIG.gender_models,
         ),
     ]
 
