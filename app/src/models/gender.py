@@ -81,14 +81,14 @@ class GenderCNNSmall(nn.Module):
         self.conv_block2 = nn.Sequential(
             nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.Conv2d(in_channels=64, out_channels=62, kernel_size=3, padding=1),
+            nn.Conv2d(in_channels=64, out_channels=61, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2)
         )
         self.pool = nn.AdaptiveAvgPool2d((6, 6))
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(62 * 6 * 6, 16),
+            nn.Linear(61 * 6 * 6, 16),
             nn.ReLU(),
             nn.Dropout(dropout_rate),
             nn.Linear(16, num_classes)  # Output logits for binary classification
