@@ -112,6 +112,79 @@ class GenderCNNSmall(nn.Module):
         print(f"Approx. model size (parameters only): {model_mb:.3f} MB")
 
 
+class ResidualBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=1):
+        super(ResidualBlock, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(out_channels)
+        self.conv3 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn3 = nn.BatchNorm2d(out_channels)
+        
+        self.shortcut = nn.Sequential()
+        if stride != 1 or in_channels != out_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(out_channels)
+            )
+
+    def forward(self, x):
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.relu(self.bn2(self.conv2(out)))
+        out = self.bn3(self.conv3(out))
+        out += self.shortcut(x)
+        out = self.relu(out)
+        return out
+
+class GenderResNet(nn.Module):
+    def __init__(self, dropout_rate=0.5, num_classes=2):
+        super(GenderResNet, self).__init__()
+        self.in_channels = 32
+        
+        self.conv1 = nn.Conv2d(3, self.in_channels, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(self.in_channels)
+        self.relu = nn.ReLU(inplace=True)
+        
+        self.layer1 = self._make_layer(32, 2, stride=1)
+        self.layer2 = self._make_layer(64, 2, stride=2)
+        self.layer3 = self._make_layer(128, 2, stride=2)
+        
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc = nn.Sequential(
+            nn.Flatten(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(128, num_classes)
+        )
+
+    def _make_layer(self, out_channels, num_blocks, stride):
+        strides = [stride] + [1] * (num_blocks - 1)
+        layers = []
+        for stride in strides:
+            layers.append(ResidualBlock(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.layer1(out)
+        out = self.layer2(out)
+        out = self.layer3(out)
+        out = self.avg_pool(out)
+        out = self.fc(out)
+        return out
+
+    def print_number_parameters(self):
+        total_params = sum(p.numel() for p in self.parameters())
+        trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        model_bytes = sum(p.numel() * p.element_size() for p in self.parameters())
+        model_mb = model_bytes / (1024 ** 2)
+
+        print(f"Model parameters (trainable/total): {trainable_params:,}/{total_params:,}")
+        print(f"Approx. model size (parameters only): {model_mb:.3f} MB")
+
+
 
 class GenderModule(pl.LightningModule):
     def __init__(self, CONFIG: Configuration, weights=None):
@@ -120,8 +193,12 @@ class GenderModule(pl.LightningModule):
         self.CONFIG = CONFIG
         if CONFIG.model_type == "small":
             self.model = GenderCNNSmall(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
-        else:
+        elif CONFIG.model_type == "resnet":
+            self.model = GenderResNet(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
+        elif CONFIG.model_type == "large":
             self.model = GenderCNN(dropout_rate=CONFIG.dropout_rate, num_classes=CONFIG.num_classes)
+        else:
+            raise ValueError(f"Invalid model type: {CONFIG.model_type}. Expected 'small', 'large' or 'resnet'.")
 
         # Calculate weights: Majority_class_count / Class_count
         # weights = torch.tensor([1.0, 8204.0 / 2381.0]) 

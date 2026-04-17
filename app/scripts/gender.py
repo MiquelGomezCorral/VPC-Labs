@@ -16,6 +16,7 @@ def train_gender(CONFIG: Configuration):
 
     train_loader, test_loader = load_gender_data(CONFIG)
     model = GenderModule(CONFIG, weights=torch.tensor([0.4, 0.6]))
+    # model = GenderModule(CONFIG)
     model.model.print_number_parameters()
 
 

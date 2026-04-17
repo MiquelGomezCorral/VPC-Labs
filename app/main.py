@@ -41,11 +41,11 @@ if __name__ == "__main__":
     #                                       Gender
     # ======================================================================================
     p_gender = subparsers.add_parser("gender", help="Gender classification script")
-    p_gender.add_argument("-mt", "--model_type", choices=["small", "large"], default="large", help="Model type (default: 'small', options: 'small', 'large')")
+    p_gender.add_argument("-mt", "--model_type", choices=["small", "large", "resnet"], default="large", help="Model type (default: 'large', options: 'small', 'large', 'resnet')")
     p_gender.add_argument("-is", "--image_size", type=int, default=100, help="Image size (default: 100)")
     p_gender.add_argument("-cl", "--num_classes", type=int, default=2, help="Number of classes (default: 2)")
     p_gender.add_argument("-bs", "--batch_size", type=int, default=128, help="Batch size (default: 512)")
-    p_gender.add_argument("-ep", "--num_epochs", type=int, default=100, help="Number of epochs (default: 100)")
+    p_gender.add_argument("-ep", "--epochs", type=int, default=100, help="Number of epochs (default: 100)")
     p_gender.add_argument("-dr", "--dropout_rate", type=float, default=0.5, help="Dropout rate (default: 0.5)")
     p_gender.add_argument("-ls", "--label_smoothing", type=float, default=0.1, help="Label smoothing (default: 0.1)")
     p_gender.add_argument("-lr", "--learning_rate", type=float, default=5e-3, help="Learning rate (default: 0.01)")
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     p_car.add_argument("-is", "--image_size", type=int, default=224, help="Image size (default: 224)")
     p_car.add_argument("-cl", "--num_classes", type=int, default=20, help="Number of classes (default: 20)")
     p_car.add_argument("-bs", "--batch_size", type=int, default=128, help="Batch size (default: 512)")
-    p_car.add_argument("-ep", "--num_epochs", type=int, default=100, help="Number of epochs (default: 100)")
+    p_car.add_argument("-ep", "--epochs", type=int, default=100, help="Number of epochs (default: 100)")
     # p_car.add_argument("-dr", "--dropout_rate", type=float, default=0.5, help="Dropout rate (default: 0.5)")
     p_car.add_argument("-ls", "--label_smoothing", type=float, default=0.1, help="Label smoothing (default: 0.1)")
     p_car.add_argument("-lr", "--learning_rate", type=float, default=5e-3, help="Learning rate (default: 0.01)")

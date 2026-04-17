@@ -29,7 +29,7 @@ class Configuration:
     gender_y_test: str = os.path.join(gender_data, "y_test.npy")
 
 
-    model_type: str = "small"  # "small" or "large"
+    model_type: str = "small"  # "small", "large" or "resnet"
     # ===================================================================
     #                       CAR
     # ===================================================================
