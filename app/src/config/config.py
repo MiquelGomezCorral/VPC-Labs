@@ -41,6 +41,15 @@ class Configuration:
     car_y_train: str = os.path.join(car_data, "y_train.npy")
     car_y_test: str = os.path.join(car_data, "y_test.npy")
 
+    # ===================================================================
+    #                       ATTENTION
+    # ===================================================================
+    attention_data: str = os.path.join(DATA_PATH, "attention")
+
+    # ===================================================================
+    #                       OTHERS
+    # ===================================================================
+
 
     exp_name: str = "base_name"
     exp_description: str = "Base experiment description"
