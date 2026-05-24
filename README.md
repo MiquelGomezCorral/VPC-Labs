@@ -1,4 +1,4 @@
-# General Python Project Template
+# VPC Labs — Computer Vision Exercises
 
 [English](#english) | [Español](#español)
 
@@ -8,30 +8,25 @@
 ## English
 
 ### About
-This repository serves as a **robust and scalable template** for Python projects. It is designed to minimize setup time for data science and software development workflows by providing a pre-configured folder structure and modern dependency management tools.
+This repository contains the three assignments for the **Computer Vision** course (MUIARFID):
+1. **Gender Recognition** — Train a CNN (<100K or >98% accuracy)
+2. **Car Model Identification** — Bilinear CNN with pre-trained backbones (ResNet-50 / VGG-16)
+3. **Attention Visualization** — ViT attention maps, rollout, and interactive per-patch exploration
 
 **Repository Structure:**
-* `app/`: Source code for the application (installable package).
-* `data/`: Directory for datasets (raw and processed).
-* `models/`: Storage for serialized models.
-* `notebooks/`: Jupyter notebooks for experimentation and analysis.
-* `docs/`: Project documentation.
-* `logs/`: Application logs.
 
-### Features
-* **Modular Architecture:** The `app/` directory is configured as an editable package (`-e`), allowing you to import your own code easily into notebooks or scripts.
-* **Modern Tooling:** Optimized for speed using `uv` for dependency resolution.
-* **Data Science Ready:** Includes setup for Jupyter Kernels linked to the virtual environment.
-* **Environment Management:** Clear instructions for `venv` creation.
-
-### Usage
-To start a new project using this structure:
-1. Click the green **"Use this template"** button at the top right of this page.
-2. Select **"Create a new repository"**.
-3. Clone your new repo and follow the setup instructions below.
+* `app/main.py` — CLI entry point for training (gender / car subcommands)
+* `app/scripts/` — Training loops (`gender.py`, `car.py`) using PyTorch Lightning
+* `app/src/config/` — `Configuration` dataclass with all hyperparameters
+* `app/src/data/` — Data loaders from `.npy` files
+* `app/src/models/` — Model architectures (CNN, ResNet, Bilinear CNN)
+* `data/` — Datasets (`.npy` format: gender, car, attention/validation images)
+* `notebooks/` — 4 notebooks for each exercise + interactive attention visualization
+* `models/` — Saved checkpoints (ignored by git)
+* `logs/` — Training logs (ignored by git)
+* `docs/` — Project documentation
 
 ### Setup & Installation
-Run the following commands to create your local environment and install dependencies:
 
 ```bash
 conda create --name VPC_env python=3.13 -y
@@ -39,45 +34,79 @@ conda activate VPC_env
 
 pip install uv
 uv pip install -r requirements.txt
-
 pip install -e .
-
 uv pip install ipykernel
 python -m ipykernel install --user --name=VPC_env --display-name "VPC_env (Conda)"
 ```
+
+### Execution
+
+**Training via CLI (from repo root):**
+
+```bash
+# Gender Recognition
+python app/main.py gender --model_type resnet --epochs 100 --batch_size 128 --learning_rate 5e-3
+
+# Car Model Identification  
+python app/main.py car --model_type vg-res --epochs 100 --batch_size 128 --learning_rate 5e-3
+```
+
+Common flags: `--seed`, `--batch_size`, `--epochs`, `--learning_rate`, `--weight_decay`, `--label_smoothing`, `--patience`.
+
+Gender-specific: `--model_type` (`small`, `large`, `resnet`), `--image_size`, `--dropout_rate`.
+
+Car-specific: `--model_type` (`vg-res`, `vg-vg`, `res-res`), `--momentum`.
+
+**Notebooks (from repo root):**
+```bash
+jupyter notebook notebooks/
+```
+
+| Notebook | Exercise |
+|---|---|
+| `gender_prediction.ipynb` | Gender Recognition (CNN) |
+| `car_model_identification.ipynb` | Car Model Identification (Bilinear CNN) |
+| `attention_visualization.ipynb` | ViT attention maps & rollout |
+| `attention_visualization_interactive.ipynb` | Interactive per-patch attention explorer |
+
+All notebooks import from `src.*` and `scripts.*` directly (no path changes needed).
+
+### Data
+Data must be placed as `.npy` files under `data/gender/` and `data/car/` before training. Validation images for attention visualization go under `data/attention/validation/`.
+
+### Key Dependencies
+`pytorch-lightning`, `torch`, `torchvision`, `numpy`, `maikol-utils`, `transformers`, `timm`, `ipykernel`.
+
 ### Dataset Source
-Link: Insert Link Here
+Provided by the course. Place `.npy` files in the corresponding `data/` subdirectories.
 
 *Maintained by [MiquelGomezCorral](https://miquelgc.net)*
+
+---
 
 <a name="español"></a>
 ## Español
 
 ### Sobre el proyecto
-Este repositorio sirve como una **plantilla robusta y escalable** para proyectos en Python. Está diseñado para minimizar el tiempo de configuración en flujos de trabajo de ciencia de datos y desarrollo de software, proporcionando una estructura de carpetas preconfigurada y herramientas modernas de gestión de dependencias.
+Este repositorio contiene las tres prácticas de la asignatura de **Visión por Computador** (MUIARFID):
+1. **Gender Recognition** — Entrenar una CNN (<100K parámetros o >98% accuracy)
+2. **Car Model Identification** — CNN bilineal con backbones preentrenados (ResNet-50 / VGG-16)
+3. **Attention Visualization** — Mapas de atención de ViT, rollout y exploración interactiva por parche
 
 **Estructura del Repositorio:**
-* `app/`: Código fuente de la aplicación (paquete instalable).
-* `data/`: Directorio para datasets (crudos y procesados).
-* `models/`: Almacenamiento para modelos serializados.
-* `notebooks/`: Jupyter notebooks para experimentación y análisis.
-* `docs/`: Documentación del proyecto.
-* `logs/`: Logs de la aplicación.
 
-### Características
-* **Arquitectura Modular:** El directorio `app/` está configurado como un paquete editable (`-e`), lo que permite importar tu propio código fácilmente en notebooks o scripts.
-* **Herramientas Modernas:** Optimizado para velocidad usando `uv` para la resolución de dependencias.
-* **Listo para Data Science:** Incluye configuración para Kernels de Jupyter vinculados al entorno virtual.
-* **Gestión de Entorno:** Instrucciones claras para la creación de `venv`.
-
-### Cómo usarlo
-Para iniciar un nuevo proyecto usando esta estructura:
-1. Haz clic en el botón verde **"Use this template"** (Usar esta plantilla) en la parte superior derecha de esta página.
-2. Selecciona **"Create a new repository"** (Crear un nuevo repositorio).
-3. Clona tu nuevo repo y sigue las instrucciones de configuración a continuación.
+* `app/main.py` — Punto de entrada CLI para entrenamiento (subcomandos gender / car)
+* `app/scripts/` — Bucles de entrenamiento (`gender.py`, `car.py`) con PyTorch Lightning
+* `app/src/config/` — Dataclass `Configuration` con todos los hiperparámetros
+* `app/src/data/` — Carga de datos desde archivos `.npy`
+* `app/src/models/` — Arquitecturas (CNN, ResNet, CNN Bilineal)
+* `data/` — Datasets (formato `.npy`: gender, car, imágenes de validación para attention)
+* `notebooks/` — 4 notebooks para cada ejercicio + visualización interactiva de atención
+* `models/` — Checkpoints guardados (ignorados por git)
+* `logs/` — Logs de entrenamiento (ignorados por git)
+* `docs/` — Documentación del proyecto
 
 ### Configuración e Instalación
-Ejecuta los siguientes comandos para crear tu entorno local e instalar las dependencias:
 
 ```bash
 conda create --name VPC_env python=3.13 -y
@@ -85,14 +114,50 @@ conda activate VPC_env
 
 pip install uv
 uv pip install -r requirements.txt
-
 pip install -e .
-
 uv pip install ipykernel
 python -m ipykernel install --user --name=VPC_env --display-name "VPC_env (Conda)"
 ```
-### Fuente dataset
-Link: Añade aquí el link a tu dataset
 
+### Ejecución
 
-*Matenido por [MiquelGomezCorral](https://miquelgc.net)*
+**Entrenamiento por CLI (desde la raíz del repo):**
+
+```bash
+# Gender Recognition
+python app/main.py gender --model_type resnet --epochs 100 --batch_size 128 --learning_rate 5e-3
+
+# Car Model Identification  
+python app/main.py car --model_type vg-res --epochs 100 --batch_size 128 --learning_rate 5e-3
+```
+
+Flags comunes: `--seed`, `--batch_size`, `--epochs`, `--learning_rate`, `--weight_decay`, `--label_smoothing`, `--patience`.
+
+Específicos de gender: `--model_type` (`small`, `large`, `resnet`), `--image_size`, `--dropout_rate`.
+
+Específicos de car: `--model_type` (`vg-res`, `vg-vg`, `res-res`), `--momentum`.
+
+**Notebooks (desde la raíz del repo):**
+```bash
+jupyter notebook notebooks/
+```
+
+| Notebook | Ejercicio |
+|---|---|
+| `gender_prediction.ipynb` | Gender Recognition (CNN) |
+| `car_model_identification.ipynb` | Car Model Identification (CNN Bilineal) |
+| `attention_visualization.ipynb` | Mapas de atención ViT y rollout |
+| `attention_visualization_interactive.ipynb` | Explorador interactivo de atención por parche |
+
+Todos los notebooks importan desde `src.*` y `scripts.*` directamente (no hace falta modificar el path).
+
+### Datos
+Los datos deben colocarse como archivos `.npy` en `data/gender/` y `data/car/` antes de entrenar. Las imágenes de validación para la visualización de atención van en `data/attention/validation/`.
+
+### Dependencias principales
+`pytorch-lightning`, `torch`, `torchvision`, `numpy`, `maikol-utils`, `transformers`, `timm`, `ipykernel`.
+
+### Fuente del dataset
+Proporcionado por la asignatura. Colocar los archivos `.npy` en los subdirectorios correspondientes de `data/`.
+
+*Mantenido por [MiquelGomezCorral](https://miquelgc.net)*
