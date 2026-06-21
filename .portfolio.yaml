@@ -1,10 +1,10 @@
 title:
-  en: Computer Vision Labs: Gender Recognition, Car ID, Attention Visualization
-  es: Prácticas de Visión por Computador: Gender, Coches y Visualización de Atención
+  en: "Computer Vision Labs: Gender Recognition, Car ID, Attention Visualization"
+  es: "Prácticas de Visión por Computador: Gender, Coches y Visualización de Atención"
 finished: finished
 descriptionShort:
-  en: Three computer vision assignments: gender recognition (CNN <100K params), car model identification (Bilinear CNN with VGG/ResNet backbones), and ViT attention visualization (rollout + interactive patch explorer). All implemented with PyTorch Lightning.
-  es: Tres prácticas de visión por computador: reconocimiento de género (CNN <100K params), identificación de modelos de coche (CNN Bilineal con backbones VGG/ResNet), y visualización de atención ViT (rollout + explorador interactivo de parches). Todo implementado con PyTorch Lightning.
+  en: "Three computer vision assignments: gender recognition (CNN <100K params), car model identification (Bilinear CNN with VGG/ResNet backbones), and ViT attention visualization (rollout + interactive patch explorer). All implemented with PyTorch Lightning."
+  es: "Tres prácticas de visión por computador: reconocimiento de género (CNN <100K params), identificación de modelos de coche (CNN Bilineal con backbones VGG/ResNet), y visualización de atención ViT (rollout + explorador interactivo de parches). Todo implementado con PyTorch Lightning."
 descriptionLong:
   en: |
     Three comprehensive computer vision lab assignments from the MUIARFID master's program. Exercise 1 — Gender Recognition: train a CNN with under 100K parameters achieving >98% accuracy. Supports small/large CNN and ResNet architectures. Exercise 2 — Car Model Identification: Bilinear CNN with pretrained backbones (VGG-16, ResNet-50) in three combinations (vg-res, vg-vg, res-res). Two-stage training with backbone freezing then full fine-tuning at reduced LR. Exercise 3 — Attention Visualization: explore ViT attention maps using raw attention rollout and interactive per-patch head selection. Built with PyTorch Lightning for clean training loops, automatic checkpointing, and early stopping. Includes 4 Jupyter notebooks for interactive experimentation and a CLI for batch training runs.
