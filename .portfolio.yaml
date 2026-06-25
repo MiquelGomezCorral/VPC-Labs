@@ -1,6 +1,6 @@
 title:
-  en: "Computer Vision Labs: Gender Recognition, Car ID, Attention Visualization"
-  es: "Prácticas de Visión por Computador: Gender, Coches y Visualización de Atención"
+  en: Computer Vision Labs
+  es: Prácticas de Visión por Computador
 finished: finished
 descriptionShort:
   en: "Three computer vision assignments: gender recognition (CNN <100K params), car model identification (Bilinear CNN with VGG/ResNet backbones), and ViT attention visualization (rollout + interactive patch explorer). All implemented with PyTorch Lightning."
@@ -31,5 +31,6 @@ keywords:
 slug: VPC-Labs
 order: 73
 featured: false
+
 
 
