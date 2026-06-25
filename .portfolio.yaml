@@ -25,12 +25,16 @@ screenShoots:
   - readme-images/volcano_reflection_layer_5.png
   - readme-images/volcano_reflection_layer_6.png
   - readme-images/zebra_back_layer_3.png
+date:
+  en: Mar 2026
+  es: Mar 2026
 keywords:
   en: [computer vision, gender recognition, CNN, car model identification, bilinear CNN, VGG ResNet, ViT attention, attention rollout, patch visualization, PyTorch Lightning, vision transformer, transfer learning]
   es: [visión por computador, reconocimiento de género, CNN, identificación de modelos de coche, CNN bilineal, VGG ResNet, atención ViT, rollout de atención, visualización de parches, PyTorch Lightning, vision transformer, transfer learning]
 slug: VPC-Labs
 order: 73
 featured: false
+
 
 
 
