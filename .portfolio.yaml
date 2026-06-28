@@ -10,7 +10,7 @@ descriptionLong:
     Three comprehensive computer vision lab assignments from the MUIARFID master's program. Exercise 1 — Gender Recognition: train a CNN with under 100K parameters achieving >98% accuracy. Supports small/large CNN and ResNet architectures. Exercise 2 — Car Model Identification: Bilinear CNN with pretrained backbones (VGG-16, ResNet-50) in three combinations (vg-res, vg-vg, res-res). Two-stage training with backbone freezing then full fine-tuning at reduced LR. Exercise 3 — Attention Visualization: explore ViT attention maps using raw attention rollout and interactive per-patch head selection. Built with PyTorch Lightning for clean training loops, automatic checkpointing, and early stopping. Includes 4 Jupyter notebooks for interactive experimentation and a CLI for batch training runs.
   es: |
     Tres prácticas completas de visión por computador del máster MUIARFID. Ejercicio 1 — Gender Recognition: entrenar una CNN con menos de 100K parámetros alcanzando >98% accuracy. Soporta arquitecturas small/large CNN y ResNet. Ejercicio 2 — Car Model Identification: CNN Bilineal con backbones preentrenados (VGG-16, ResNet-50) en tres combinaciones (vg-res, vg-vg, res-res). Entrenamiento en dos fases con congelación de backbones y fine-tuning completo con LR reducido. Ejercicio 3 — Attention Visualization: explorar mapas de atención ViT usando raw attention rollout y selección interactiva de cabezas por parche. Construido con PyTorch Lightning para bucles de entrenamiento limpios, checkpointing automático y early stopping. Incluye 4 notebooks Jupyter para experimentación interactiva y CLI para ejecuciones batch.
-technologies: [latex, python, pytorch, jupyter, ai]
+technologies: [ai, huggingface, jupyter, latex, matplot, numpy, opencv, plotly, python, pytorch, sklearn]
 tags: [class]
 logo: readme-images/bus1_layer2.png
 screenShoots:
@@ -34,6 +34,8 @@ keywords:
 slug: VPC-Labs
 order: 73
 featured: false
+
+
 
 
 
