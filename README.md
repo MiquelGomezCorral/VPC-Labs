@@ -161,3 +161,16 @@ Los datos deben colocarse como archivos `.npy` en `data/gender/` y `data/car/` a
 Proporcionado por la asignatura. Colocar los archivos `.npy` en los subdirectorios correspondientes de `data/`.
 
 *Mantenido por [MiquelGomezCorral](https://miquelgc.net)*
+
+---
+
+<!-- portfolio-gallery:start -->
+## Gallery
+
+<p align="center">
+  <img src="readme-images/bus1_layer2_169.png" width="48%" />
+  <img src="readme-images/peackock_layer2_169.png" width="48%" />
+  <img src="readme-images/volcan_rollout_169.png" width="48%" />
+  <img src="readme-images/volcano_heads_layer2_169.png" width="48%" />
+</p>
+<!-- portfolio-gallery:end -->

@@ -12,19 +12,19 @@ descriptionLong:
     Tres prácticas completas de visión por computador del máster MUIARFID. Ejercicio 1 — Gender Recognition: entrenar una CNN con menos de 100K parámetros alcanzando >98% accuracy. Soporta arquitecturas small/large CNN y ResNet. Ejercicio 2 — Car Model Identification: CNN Bilineal con backbones preentrenados (VGG-16, ResNet-50) en tres combinaciones (vg-res, vg-vg, res-res). Entrenamiento en dos fases con congelación de backbones y fine-tuning completo con LR reducido. Ejercicio 3 — Attention Visualization: explorar mapas de atención ViT usando raw attention rollout y selección interactiva de cabezas por parche. Construido con PyTorch Lightning para bucles de entrenamiento limpios, checkpointing automático y early stopping. Incluye 4 notebooks Jupyter para experimentación interactiva y CLI para ejecuciones batch.
 technologies: [ai, huggingface, jupyter, latex, matplot, numpy, opencv, plotly, python, pytorch, sklearn]
 tags: [class]
-logo: readme-images/bus1_layer2.png
+logo: readme-images/peackock_layer2_169.png
 screenShoots:
-  - readme-images/bus1_layer2.png
-  - readme-images/peackock_layer2.png
-  - readme-images/volcan_rollout.png
-  - readme-images/volcano_heads_layer2.png
-  - readme-images/volcano_reflection_layer_1.png
-  - readme-images/volcano_reflection_layer_10.png
-  - readme-images/volcano_reflection_layer_11.png
-  - readme-images/volcano_reflection_layer_3.png
-  - readme-images/volcano_reflection_layer_5.png
-  - readme-images/volcano_reflection_layer_6.png
-  - readme-images/zebra_back_layer_3.png
+  - readme-images/bus1_layer2_169.png
+  - readme-images/peackock_layer2_169.png
+  - readme-images/volcan_rollout_169.png
+  - readme-images/volcano_heads_layer2_169.png
+  - readme-images/volcano_reflection_layer_1_169.png
+  - readme-images/volcano_reflection_layer_10_169.png
+  - readme-images/volcano_reflection_layer_11_169.png
+  - readme-images/volcano_reflection_layer_3_169.png
+  - readme-images/volcano_reflection_layer_5_169.png
+  - readme-images/volcano_reflection_layer_6_169.png
+  - readme-images/zebra_back_layer_3_169.png
 date:
   en: Mar 2026
   es: Mar 2026
@@ -34,7 +34,6 @@ keywords:
 slug: VPC-Labs
 relevancy: 62
 featured: false
-
 
 
 
