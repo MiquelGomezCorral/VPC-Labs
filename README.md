@@ -168,9 +168,16 @@ Proporcionado por la asignatura. Colocar los archivos `.npy` en los subdirectori
 ## Gallery
 
 <p align="center">
-  <img src="readme-images/bus1_layer2_169.png" width="48%" />
-  <img src="readme-images/peackock_layer2_169.png" width="48%" />
-  <img src="readme-images/volcan_rollout_169.png" width="48%" />
-  <img src="readme-images/volcano_heads_layer2_169.png" width="48%" />
+  <img src="readme-images/bus1_layer2_169.png" alt="bus1 layer2" width="48%" />
+  <img src="readme-images/peackock_layer2_169.png" alt="peackock layer2" width="48%" />
+  <img src="readme-images/volcan_rollout_169.png" alt="volcan rollout" width="48%" />
+  <img src="readme-images/volcano_heads_layer2_169.png" alt="volcano heads layer2" width="48%" />
+  <img src="readme-images/volcano_reflection_layer_10_169.png" alt="volcano reflection layer 10" width="48%" />
+  <img src="readme-images/volcano_reflection_layer_11_169.png" alt="volcano reflection layer 11" width="48%" />
+  <img src="readme-images/volcano_reflection_layer_1_169.png" alt="volcano reflection layer 1" width="48%" />
+  <img src="readme-images/volcano_reflection_layer_3_169.png" alt="volcano reflection layer 3" width="48%" />
+  <img src="readme-images/volcano_reflection_layer_5_169.png" alt="volcano reflection layer 5" width="48%" />
+  <img src="readme-images/volcano_reflection_layer_6_169.png" alt="volcano reflection layer 6" width="48%" />
+  <img src="readme-images/zebra_back_layer_3_169.png" alt="zebra back layer 3" width="48%" />
 </p>
 <!-- portfolio-gallery:end -->
